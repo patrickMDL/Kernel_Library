@@ -1,5 +1,5 @@
 import numpy as np
-e = 2,718281828
+e = 2.718281828
 
 def Linear_K( x, y, c):
     #x and y are the vector, while c is the constant
@@ -28,8 +28,8 @@ def Laplacian_K(x, y, s):
    return result
 
 def Sigmoid_K(x, y, a, c):
-   result = a*(y.dot(x.T)+c)
-   result = np.tanh(result) #tanh(result)
+   result = (a*y.dot(x.T))+c
+   result = np.sinh(result)/np.cosh(result)
    return result
 
 def Rational_Quadratic_K(x, y, c):
@@ -43,7 +43,7 @@ def Multiquadric_K (x, y, c):
    result = np.sqrt(norm)
    return result
 
-def Inverse_Multiquadrc_K(x,y,c):
+def Inverse_Multiquadric_K(x,y,c):
    norm = x-y
    norm = np.linalg.norm(norm)**2 + c**2
    result = 1/np.sqrt(norm)
@@ -51,7 +51,7 @@ def Inverse_Multiquadrc_K(x,y,c):
 
 def Cauchy_K(x, y, s):
    x=x-y
-   result = e**(-(np.linalg.norm(x)/2*(s**2)))
-   result = 1+ result
+   result = (np.linalg.norm(x)**2/(s**2))
+   result = 1 + result
    result = 1 / result
    return result

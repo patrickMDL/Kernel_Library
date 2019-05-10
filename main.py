@@ -2,11 +2,11 @@ import kernel_methods as km
 import numpy as np
 
 x = np.array ([1,2,3,4])
-y = np.array ([4,3,2,1])
-a = 3
+y = np.array ([4,3,2,2])
+a = 0.0003
 s = 5
 c = 4
-d = 2
+d = 0.0004
 print ("================================================================================")
 print ("Used Values\n**x=%s" % x) 
 print ("**y = %s" % y) 
@@ -40,6 +40,10 @@ print ("Rational Kernel: %s" % result_Rational)
 result_Multiquadric = km.Multiquadric_K (x, y, c)
 print ("Multiquadric Kernel: %s" % result_Multiquadric)
 
+result_Inverse = km.Inverse_Multiquadric_K(x,y,c)
+print ("Inverse Multiquadric Kernel: %s" % result_Inverse)
 
+result_Cauchy = km.Cauchy_K(x, y, s)
+print ("Cauchy Kernel: %s" % result_Cauchy)
 
 print ("================================================================================")
