@@ -8,11 +8,12 @@ def Linear_K( x, y, c):
    return result
 
 def Polynomial_K(x, y, a, c, d):
-    #a stands for alfa, x and y are the vectors, c the constant and 'd' the degree
+    #a stands for alfa and 'd' the degree
     result = (a*(y.dot(x.T)) + c)**d
     return result
 
 def Gaussian_K (x, y, s):
+   #S stands for sigma and e is the euler number
     x=x-y
     result = e**(-1*(np.linalg.norm(x)**2/2*(s**2)))
     return result
