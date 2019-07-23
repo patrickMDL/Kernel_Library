@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import random as rand
 
 
-N = 6000 #numero de iteracoes
+N = 2000 #numero de iteracoes
 
 R = 10 #numero de realizacoes
 
-mu = 5.5*10**(-1) #step-size
+mu = 1.0*10**(-1) #step-size
 
 w0 =  np.array([[ 1],[-2], [-0.1], [0.2], [math.pi], [math.exp(-2.6)], [-math.sqrt(3)]])
 #Diferente do codigo em matlab, aqui o w0 ja eh gerado como matriz coluna
@@ -62,7 +62,7 @@ plt.figure()
 
 for i in range (len(w0)):
 	plt.plot ( Ew[i,:])
-plt.ylabel('E\{{\bf w}\} NLMS')
+plt.ylabel('E\{{\bf w}\}NLMS')
 plt.xlabel('iterations (n)')
 plt.legend(loc="upper left")
 plt.grid(True)
