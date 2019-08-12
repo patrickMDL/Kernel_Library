@@ -23,11 +23,18 @@ Ew = np.zeros((len(w1), N))
 for r in range(1,R):
 	e = np.zeros((N, 1))
 	u = np.zeros((len(w1),1))
+	dictionary = np.zeros((len(w1),1))
 	w = np.zeros((len(w1), N))
 
 	v = 0
+
+	for i in range (0, len(w1)):
+		dictionary[i] = sigma_x * np.random.rand()
+
+	for i in range(0,len(w1)):
+		u[i] = kernel.Gaussian_K(dictionary[v], w1, sigma_z)
+
 	for i in range(0, N-1):
-		u[v] = sigma_x * np.random.rand()
 		
 		d = np.dot( u.T, w1) + sigma_z*np.random.rand() #d esta saindo escalar
 		e[i] = d - np.dot(w[:,i],u)  # 'e' is shaped as (2000, 1)
