@@ -19,11 +19,15 @@ sigma_x = 1.0 #desvio padrao do sinal de entrada
 mse = np.zeros((N,1))
 Ew = np.zeros((len(w0), N))
 
+verf = False
 for r in range(1,R):
 	e = np.zeros((N, 1))
 	x = np.zeros((len(w0),1))
 	w = np.zeros((len(w0), N))
-
+	if (verf == False):
+		for i in range(0,len(w0)):
+			x[i] = sigma_x * np.random.rand()
+		verf = True
 	v = 0
 	for i in range(0, N-1):
 		if (v+1>=len(w0)):
