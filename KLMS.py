@@ -12,11 +12,10 @@ w1 = np.array([ [-0.0098],   [-0.0143],   [-0.0251],   [-0.0399],   [-0.0518],  
 #w1 = np.array([[1], [2], [3]]) #just for test
 #Diferente do codigo em matlab, aqui o w0 ja eh gerado como matriz coluna
 
-
 sigma_z = 1*10**(-3) #desvio padrao do ruido
 sigma_x = 1.0*10**(-1) #desvio padrão do sinal de entrada
 
-#Algoritmo adaptativo
+#Algoritmo adaptativo	
 mse = np.zeros((N,1))
 Ew = np.zeros((len(w1), N))
 
@@ -28,6 +27,7 @@ aux = False
 u = np.zeros((len(w1),1))
 dictionary = np.zeros((len(w1),len(w1)))
 vet_input = np.zeros((len(w1), 1))
+coefficient_e = np.zeros((N))
 
 for r in range(1,R):
 	e = np.zeros((N, 1))
@@ -36,8 +36,6 @@ for r in range(1,R):
 	for i in range (0, len(w1)):
 		for j in range (0, len(w1)):
 			dictionary[i,j] = sigma_x * np.random.rand()
-	
-	
 
 	if (aux == False):
 		for i in range (0, len(w1)):
@@ -50,21 +48,32 @@ for r in range(1,R):
 		u[v]  = kernel.Gaussian_K(dictionary[:, v], vet_input[v], sigma) 
 		d = np.dot( u.T, w1) + np.sqrt(sigma_z)*np.random.rand() #d esta saindo escalar
 		e[i] = d - np.dot(w[:,i],u)  # 'e' is shaped as (N, 1)
-
+		
 		if (v+1>=len(w1)):
 			w[:,i+1] = w[:,i] +  u[:,0] * e[i]  * mu
+			coefficient_e[i] = np.linalg.norm(w1[:] - w[:,i])/w1[v]
 			v = 0
 		elif (v<len(w1)):
 			w[:,i+1] = w[:,i] +  u[:,0] * e[i]  * mu
-			v=v+1
+			coefficient_e[i] = np.linalg.norm(w1[:] - w[:,i])/w1[v]
 
+			v=v+1
 	mse = e[:]**2 + mse
 	Ew = w[:,range(0,N)] + Ew #w is shaped as (len(w0), 1)
 MSE = mse/R
 Ew = Ew/R
 
+
+print(coefficient_e)
+
 #Gera os graficos
 #MSE = MSE.reshape(N)
+plt.plot(coefficient_e)
+plt.xlabel('iterations(n)')
+plt.ylabel('Relative error')
+plt.grid(True)
+plt.figure()
+
 MSE=10*np.log10(MSE)
 plt.plot(MSE)
 plt.ylabel('Mean Squared Error (MSE) [dB]')
