@@ -1,10 +1,14 @@
 import numpy as np
 e = 2.718281828459045235360287
 def Linear_K( x, y, c):
-    #x and y are the vector, while c is the constant
-    #k(x,y)=x^T.y + c
-   result = y.T * x  + c
-   return result
+   #x and y are the vector, while c is the constant
+   x = np.reshape(x,(1,len(x)))
+   y = np.reshape(y,(1,len(y)))
+   result = np.dot(x, y.T)  + c
+   result2 = np.dot(x, x.T) + c
+   result3 = np.dot(y, y.T) + c
+   resultf = result / (result2*result3 * 0.5)
+   return resultf
 
 def Polynomial_K(x, y, a, c, d):
     #a stands for alfa and 'd' the degree
