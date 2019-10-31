@@ -10,9 +10,11 @@ def Linear_K( x, y, c):
    resultf = result / (result2*result3 * 0.5)
    return resultf
 
-def Polynomial_K(x, y, a, c, d):
+def Polynomial_K(x, y, a,d):
     #a stands for alfa and 'd' the degree
-    result = (a*(y.dot(x.T)) + c)**d
+    x = np.reshape(x,(1,len(x)))
+    y = np.reshape(y,(1,len(y)))
+    result = (np.dot(x,y.T) + a)**d
     return result
 
 def Gaussian_K (x, y, s):
