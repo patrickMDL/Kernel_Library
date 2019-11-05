@@ -3,6 +3,7 @@ import math
 import matplotlib.pyplot as plt
 import random as rand
 import kernel_methods as kernel 
+import csv
 
 N = 3000 #numero de iteracoes
 R = 50 #numero de realizacoes
@@ -29,6 +30,7 @@ u = np.zeros((p,1))
 uk = np.zeros ((p,1))
 dictionary = np.zeros((p,p))
 
+aux_array = np.zeros(len(mse))
 
 for r in range(1,R):
 	e = np.zeros((N, 1))
@@ -45,8 +47,8 @@ for r in range(1,R):
 		aux3 = np.random.rand()*sigma_x
 		u = np.insert(u, 0, aux3, axis=0)
 		for v in range(0,p):
-			uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, d)
-			#uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
+			#uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, d)
+			uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
 		#colocar seno/coseno
 		d = np.dot(w0.T, np.sin(u)) + np.sqrt(sigma_z)*np.random.rand() #d esta saindo escalar
 		e[i] = d - np.dot(w[:,i].T,uk)  # 'e' is shaped as (N, 1)
@@ -58,8 +60,11 @@ for r in range(1,R):
 
 	mse = e[:]**2 + mse
 	Ew = w[:,range(0,N)] + Ew #w is shaped as (p, 1)
-	
+	np.savetxt("KLMSteste.txt", mse, delimiter=',')
 
+#result = np.genfromtxt('KLMSteste.txt', delimiter=',')
+#result = np.reshape(result,(len(mse),1))
+   
 
 MSE = mse/R
 Ew = Ew/R
@@ -78,6 +83,7 @@ plt.figure()
 
 MSE=10*np.log10(MSE)
 plt.plot(MSE)
+plt.plot(reader)
 plt.ylabel('Mean Squared Error (MSE) [dB]')
 plt.xlabel('iterations (n)')
 plt.grid(True)

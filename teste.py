@@ -1,7 +1,9 @@
 import numpy as np
-a = np.zeros((5,1))
-print (a)
-for i in range (0, 10):
-    a = np.delete(a,4, axis=0)
-    a = np.insert(a,0,np.random.rand(), axis=0)
-    print (a[0])
+import csv
+
+mse = [[1.3], [2.3], [3.4]]
+myArray = np.zeros(len(mse))
+
+np.savetxt("testeq.txt", mse, delimiter=',')
+result = np.genfromtxt('testeq.txt', delimiter=',')
+result = np.reshape(result,(3,1))
