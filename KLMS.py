@@ -25,6 +25,8 @@ res = np.zeros((N))
 sigma = 0.5 #para o kernel Gaussiano
 d = 1
 aux = False
+a = 30
+c = 5
 
 u = np.zeros((p,1))
 uk = np.zeros ((p,1))
@@ -49,6 +51,13 @@ for r in range(1,R):
 		for v in range(0,p):
 			#uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, d)
 			uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
+			#uk[v] = kernel.Exponential_K(dictionary[:,v], u[:], sigma)
+			#uk[v] = kernel.Laplacian_K(dictionary[:,v], u[:,], sigma)
+			#uk[v] = kernel.Sigmoid_K(dictionary[:, v], u[:], a, c)
+			#uk[v] = kernel.Rational_Quadratic_K(dictionary[:,v], u[:], c)
+			#uk[v] = kernel.Inverse_Multiquadric_K(dictionary[:,v], u[:], c)
+			#uk[v] = kernel.Rational_Quadratic_K(dictionary[:,v], u[:], c)
+			#uk[v] = kernel.Cauchy_K(dictionary[:,v], u[:], sigma)
 		#colocar seno/coseno
 		d = np.dot(w0.T, np.sin(u)) + np.sqrt(sigma_z)*np.random.rand() #d esta saindo escalar
 		e[i] = d - np.dot(w[:,i].T,uk)  # 'e' is shaped as (N, 1)
@@ -60,21 +69,22 @@ for r in range(1,R):
 
 	mse = e[:]**2 + mse
 	Ew = w[:,range(0,N)] + Ew #w is shaped as (p, 1)
-	np.savetxt("KLMSteste.txt", mse, delimiter=',')
+	np.savetxt("Gaussian_Kernel.txt", mse, delimiter=',')
 
 #result = np.genfromtxt('KLMSteste.txt', delimiter=',')
 #result = np.reshape(result,(len(mse),1))
-   
+
+#RESULT = result/R
 
 MSE = mse/R
 Ew = Ew/R
 
 
-for i in range(1,N):
+for i in range(1,N): 
 	res[i] = np.linalg.norm(Ew[:, i] - Ew[:, i-1])
-
+ 
 #Gera os graficos
-#MSE = MSE.reshape(N)
+MSE = MSE.reshape(N)
 plt.plot(res)
 plt.xlabel('iterations(n)')
 plt.ylabel('Relative error')
@@ -82,11 +92,15 @@ plt.grid(True)
 plt.figure()
 
 MSE=10*np.log10(MSE)
-plt.plot(MSE)
-plt.plot(reader)
+#RESULT=10*np.log10(RESULT)
+
+plt.plot(MSE, color='blue')
+#plt.plot(RESULT, color='red')
+#plt.legend('EG')
 plt.ylabel('Mean Squared Error (MSE) [dB]')
 plt.xlabel('iterations (n)')
 plt.grid(True)
+plt.savefig('MSE Gaussiano.eps', format='eps', dpi=300)
 plt.figure()
 
 for i in range (len(w0)):
@@ -94,4 +108,5 @@ for i in range (len(w0)):
 plt.ylabel('E\{\bf w}\}')
 plt.xlabel('iterations (n)')
 plt.grid(True)
+plt.savefig('KLMS_Coeficientes_Exponential.eps', format='eps', dpi=300)
 plt.show()

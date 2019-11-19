@@ -26,15 +26,15 @@ def Gaussian_K (x, y, s):
    return result
 
 def Exponential_K(x, y, s):
-   result = np.exp(-1*(np.linalg.norm(x-y)/2*(s**2)))
+   result = np.exp(-1*(np.linalg.norm(x-y)/(2*(s**2))))
    return result
 
 def Laplacian_K(x, y, s):
-   result = np.exp**(-1*(np.linalg.norm(x-y)/s))
+   result = np.exp(-1*(np.linalg.norm(x-y)/s))
    return result
 
 def Sigmoid_K(x, y, a, c):
-   result = np.tanh(a*x.T*y+c)
+   result = np.tanh(a*np.dot(x.T,y)+c)
    return result
 
 def Rational_Quadratic_K(x, y, c):
