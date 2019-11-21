@@ -49,8 +49,9 @@ for r in range(1,R):
 		aux3 = np.random.rand()*sigma_x
 		u = np.insert(u, 0, aux3, axis=0)
 		for v in range(0,p):
+			uk[v] = kernel.Linear_K(dictionary[:,v], u[:], sigma)
 			#uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, d)
-			uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
+			#uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
 			#uk[v] = kernel.Exponential_K(dictionary[:,v], u[:], sigma)
 			#uk[v] = kernel.Laplacian_K(dictionary[:,v], u[:,], sigma)
 			#uk[v] = kernel.Sigmoid_K(dictionary[:, v], u[:], a, c)
@@ -69,12 +70,12 @@ for r in range(1,R):
 
 	mse = e[:]**2 + mse
 	Ew = w[:,range(0,N)] + Ew #w is shaped as (p, 1)
-	np.savetxt("Gaussian_Kernel.txt", mse, delimiter=',')
+	np.savetxt("/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Linear_Kernel.txt", mse, delimiter=',')
 
-#result = np.genfromtxt('KLMSteste.txt', delimiter=',')
-#result = np.reshape(result,(len(mse),1))
+result = np.genfromtxt('/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Gaussian_Kernel.txt', delimiter=',')
+result = np.reshape(result,(len(mse),1))
 
-#RESULT = result/R
+RESULT = result/R
 
 MSE = mse/R
 Ew = Ew/R
@@ -92,15 +93,15 @@ plt.grid(True)
 plt.figure()
 
 MSE=10*np.log10(MSE)
-#RESULT=10*np.log10(RESULT)
+RESULT=10*np.log10(RESULT)
 
 plt.plot(MSE, color='blue')
-#plt.plot(RESULT, color='red')
-#plt.legend('EG')
+plt.plot(RESULT, color='red')
+plt.legend('EG')
 plt.ylabel('Mean Squared Error (MSE) [dB]')
 plt.xlabel('iterations (n)')
 plt.grid(True)
-plt.savefig('MSE Gaussiano.eps', format='eps', dpi=300)
+plt.savefig('/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Graphs/MSE/MSE Gaussiano (Red) vs Linear(blue).eps', format='eps', dpi=300)
 plt.figure()
 
 for i in range (len(w0)):
@@ -108,5 +109,5 @@ for i in range (len(w0)):
 plt.ylabel('E\{\bf w}\}')
 plt.xlabel('iterations (n)')
 plt.grid(True)
-plt.savefig('KLMS_Coeficientes_Exponential.eps', format='eps', dpi=300)
+plt.savefig('KLMS_Coeficientes_Linear.eps', format='eps', dpi=300)
 plt.show()
