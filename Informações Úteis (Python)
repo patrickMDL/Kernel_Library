@@ -1,0 +1,31 @@
+Biblioteca Pickle
+
+Serialização de objetos do Python
+-Funcionalidades: 
+--Salvar objeto em arquivo: dump
+--Carregar objeto de arquivo: load
+
+Para tipos de dados, verificar a documentação.
+
+Biblioteca NumPy
+-Serve para processamento de vetores e matrizes;
+-Pode ser utilizado em conjunto com SciPy;
+-Útil para:
+---Álgebra linear;
+---Transformada de Fourier;
+---Trabalhar com números aleatórios;
+-Todo array começa com 0;
+-Declaração de tipo do array;
+-import numpy as np.
+*Para mais informações, verificar a documentação.
+
+Biblioteca Pandas
+-Processamento de dados;
+-Carrega dados de arquivos;
+-usa o numpy e matplotlib;
+-Classe DataFrame;
+-Declaração de tipo do array;
+-import pandas as pd;
+*sudo pip3 install pandas
+
+

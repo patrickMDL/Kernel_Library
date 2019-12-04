@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import random as rand
 import kernel_methods as kernel 
 import csv
+import time
 
 N = 3000 #numero de iteracoes
 R = 50 #numero de realizacoes
@@ -33,7 +34,7 @@ uk = np.zeros ((p,1))
 dictionary = np.zeros((p,p))
 
 aux_array = np.zeros(len(mse))
-
+start = time.time()
 for r in range(1,R):
 	e = np.zeros((N, 1))
 	w = np.zeros((p, N))
@@ -49,7 +50,7 @@ for r in range(1,R):
 		aux3 = np.random.rand()*sigma_x
 		u = np.insert(u, 0, aux3, axis=0)
 		for v in range(0,p):
-			uk[v] = kernel.Linear_K(dictionary[:,v], u[:], sigma)
+			#uk[v] = kernel.Linear_K(dictionary[:,v], u[:], sigma)
 			#uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, d)
 			#uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
 			#uk[v] = kernel.Exponential_K(dictionary[:,v], u[:], sigma)
@@ -57,8 +58,8 @@ for r in range(1,R):
 			#uk[v] = kernel.Sigmoid_K(dictionary[:, v], u[:], a, c)
 			#uk[v] = kernel.Rational_Quadratic_K(dictionary[:,v], u[:], c)
 			#uk[v] = kernel.Inverse_Multiquadric_K(dictionary[:,v], u[:], c)
-			#uk[v] = kernel.Rational_Quadratic_K(dictionary[:,v], u[:], c)
-			#uk[v] = kernel.Cauchy_K(dictionary[:,v], u[:], sigma)
+			#uk[v] = kernel.Multiquadric_K(dictionary[:,v], u[:], c)
+			uk[v] = kernel.Cauchy_K(dictionary[:,v], u[:], sigma)
 		#colocar seno/coseno
 		d = np.dot(w0.T, np.sin(u)) + np.sqrt(sigma_z)*np.random.rand() #d esta saindo escalar
 		e[i] = d - np.dot(w[:,i].T,uk)  # 'e' is shaped as (N, 1)
@@ -70,7 +71,7 @@ for r in range(1,R):
 
 	mse = e[:]**2 + mse
 	Ew = w[:,range(0,N)] + Ew #w is shaped as (p, 1)
-	np.savetxt("/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Linear_Kernel.txt", mse, delimiter=',')
+	np.savetxt("/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Cauchy_Kernel.txt", mse, delimiter=',')
 
 result = np.genfromtxt('/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Gaussian_Kernel.txt', delimiter=',')
 result = np.reshape(result,(len(mse),1))
@@ -80,6 +81,10 @@ RESULT = result/R
 MSE = mse/R
 Ew = Ew/R
 
+end = time.time()
+
+total_time = (end - start)/60
+print ("Tempo de execucao: " + str(total_time) + " minutos")
 
 for i in range(1,N): 
 	res[i] = np.linalg.norm(Ew[:, i] - Ew[:, i-1])
@@ -97,11 +102,11 @@ RESULT=10*np.log10(RESULT)
 
 plt.plot(MSE, color='blue')
 plt.plot(RESULT, color='red')
-plt.legend('EG')
+plt.legend(('Cauchy', 'Gaussiano'))
 plt.ylabel('Mean Squared Error (MSE) [dB]')
 plt.xlabel('iterations (n)')
 plt.grid(True)
-plt.savefig('/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Graphs/MSE/MSE Gaussiano (Red) vs Linear(blue).eps', format='eps', dpi=300)
+plt.savefig('/home/patrick/Desktop/Projeto de Pesquisa/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Graphs/MSE/MSE Gaussiano (Red) vs Cauchy(blue).eps', format='eps', dpi=300)
 plt.figure()
 
 for i in range (len(w0)):
@@ -111,3 +116,4 @@ plt.xlabel('iterations (n)')
 plt.grid(True)
 plt.savefig('KLMS_Coeficientes_Linear.eps', format='eps', dpi=300)
 plt.show()
+
