@@ -21,7 +21,7 @@ print ("------------------------------------------------------------------------
 result_Linear = km.Linear_K(x,y,c)
 print ("Linear Kernel: %s" % result_Linear)
 
-result_Polynomial = km.Polynomial_K( x, y, a, c, d)
+result_Polynomial = km.Polynomial_K( x, y, a, d)
 print ("Polynomial Kernel: %s" % result_Polynomial)
 
 result_Gaussian = km.Gaussian_K( x, y, s)
