@@ -1,16 +1,13 @@
 import numpy as np
 e = 2.718281828459045235360287
-def Linear_K( x, y, c):
+def Linear_K( x, y, a):
    #x and y are the vector, while c is the constant
    x = np.reshape(x,(1,len(x)))
    y = np.reshape(y,(1,len(y)))
-   result = np.dot(x, y.T)  + c
-   result2 = np.dot(x, x.T) + c
-   result3 = np.dot(y, y.T) + c
-   resultf = result / (result2*result3 * 0.5)
-   return resultf
+   result = (np.dot(x,y.T) + a)
+   return result
 
-def Polynomial_K(x, y, a,d):
+def Polynomial_K(x, y, a,d): #note: A polynomial with d = 1, is equivalent to the linear kernel;
     #a stands for alfa and 'd' the degree
     x = np.reshape(x,(1,len(x)))
     y = np.reshape(y,(1,len(y)))
