@@ -1,0 +1,9 @@
+Kernel Polynomial: 5.805825107491732e-05;			5.806*10^-5	segundos
+Kernel Gauss: 0.00017764826062044914;				1.776*10^-5	segundos
+Kernel Exponential 0.00013728035656171864;			1.373*10^-4	segundos
+Kernel Laplace: 0.000135562695469973;				1.356*10^-4	segundos
+Kernel Sigmoid: 2.988798763293946e-05;			2.989*10^-5	segundos
+Kernel Rational Quadratic: 0.00025481495955047496;		2.548*10^-4	segundos
+Kernel Inverse-Multiquadric: 0.00014595675063193946;		1.459*10^-4	segundos
+Kernel Multiquadric: 0.0001371037975727417;			1.371*10^-4	segundos
+Kernel Cauchy: 0.00013486161700822103;			1.378*10^-4	segundos

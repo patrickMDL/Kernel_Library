@@ -1,13 +1,11 @@
 import numpy as np
-import math
 import matplotlib.pyplot as plt
-import random as rand
 import kernel_methods as kernel
 import csv
 import time
 
-N = 3000  # numero de iteracoes
-R = 50  # numero de realizacoes
+N = 100  # numero de iteracoes
+R = 200  # numero de realizacoes
 mu = 1 * 10 ** (-4)  # step-size
 
 w0 = np.array(
@@ -48,15 +46,28 @@ u = np.zeros((p, 1))
 uk = np.zeros((p, 1))
 dictionary = np.zeros((p, p))
 
+poly_media = np.zeros(10)                      # Esses vetores sao usados para fazer a media de tempo            
+gauss_media = np.zeros(10)                     # de execucao das funcoes kernel.
+expo_media = np.zeros(10)                      #     
+laplace_media = np.zeros(10)                   #                 
+sigmoid_media = np.zeros(10)                   #                     
+rq_media = np.zeros(10)                        #         
+im_media = np.zeros(10)                        #                             
+multi_media = np.zeros(10)                     #                 
+cauchy_media = np.zeros(10)                    #                     
+all_media = np.zeros(10)                       #                                 
+
 aux_array = np.zeros(len(mse))
+
 start = time.time()
+
 for r in range(1, R):
     e = np.zeros((N, 1))
     w = np.zeros((p, N))
     for i in range(0, p):
         for j in range(0, p):
             dictionary[i, j] = sigma_x * np.random.rand()
-    if (aux == False):
+    if aux is False:
         for i in range(0, p):
             u[i] = sigma_x * np.random.rand()
         aux = True
@@ -65,53 +76,127 @@ for r in range(1, R):
         aux3 = np.random.rand() * sigma_x
         u = np.insert(u, 0, aux3, axis=0)
         for v in range(0, p):
-            #uk[v] = kernel.Linear_K(dictionary[:, v], u[:], sigma)
-             uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, degree)
-        # uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
-        # uk[v] = kernel.Exponential_K(dictionary[:,v], u[:], sigma)
-        # uk[v] = kernel.Laplacian_K(dictionary[:,v], u[:,], sigma)
-        # uk[v] = kernel.Sigmoid_K(dictionary[:, v], u[:], a, c)
-        # uk[v] = kernel.Rational_Quadratic_K(dictionary[:,v], u[:], c)
-        # uk[v] = kernel.Inverse_Multiquadric_K(dictionary[:,v], u[:], c)
-        # uk[v] = kernel.Multiquadric_K(dictionary[:,v], u[:], c)
-        # uk[v] = kernel.Cauchy_K(dictionary[:, v], u[:], sigma)
-        # colocar seno/coseno
+            for poly in range(0, 10):
+                poly_time_start = time.time()
+                uk[v] = kernel.Polynomial_K(dictionary[:, v], u[:], sigma, degree)
+                poly_time_end = time.time()
+                poly_media[poly] = poly_time_end - poly_time_start
+            for z in range(0, len(poly_media)):
+                all_media[0] = all_media[0] + poly_media[z]
+            all_media[0] = all_media[0] / len(poly_media)
+
+            for gauss in range(0, 10):
+                gauss_time_start = time.time()
+                uk[v] = kernel.Gaussian_K(dictionary[:, v], u[:], sigma)
+                gauss_time_end = time.time()
+                gauss_media[gauss] = gauss_time_end - gauss_time_start
+            for z in range(0, len(gauss_media)):
+                all_media[1] = all_media[1] + gauss_media[z]
+            all_media[1] = all_media[1] / len(gauss_media)
+
+            for expo in range(0, 10):
+                expo_time_start = time.time()
+                uk[v] = kernel.Exponential_K(dictionary[:, v], u[:], sigma)
+                expo_time_end = time.time()
+                expo_media[expo] = expo_time_end - expo_time_start
+            for z in range(0, len(expo_media)):
+                all_media[2] = all_media [2] + expo_media[z]
+            all_media[2] = all_media[2] / len(expo_media)
+
+            for laplace in range(0, 10):
+                laplace_time_start = time.time()
+                uk[v] = kernel.Laplacian_K(dictionary[:, v], u[:], sigma)
+                laplace_time_end = time.time()
+                laplace_media[laplace] = laplace_time_end - laplace_time_start
+            for z in range(0, len(laplace_media)):
+                all_media[3] = all_media[3] + laplace_media[z]
+            all_media[3] = all_media[3] / len(laplace_media)
+
+            for sigmoid in range(0, 10):
+                sigmoid_time_start = time.time()
+                uk[v] = kernel.Sigmoid_K(dictionary[:, v], u[:], a, c)
+                sigmoid_time_end = time.time()
+                sigmoid_media[sigmoid] = sigmoid_time_end - sigmoid_time_start
+            for z in range(0, len(sigmoid_media)):
+                all_media[4] = all_media[4] + sigmoid_media[z]
+            all_media[4] = all_media[4] / len(sigmoid_media)
+
+            for rq in range(0, 10):
+                rq_time_start = time.time()
+                uk[v] = kernel.Rational_Quadratic_K(dictionary[:, v], u[:], c)
+                rq_time_end = time.time()
+                rq_media[rq] = rq_time_end - rq_time_start 
+            for z in range(0, len(rq_media)):
+                all_media[5] = all_media[5] + rq_media[z]
+            all_media[5] = all_media[5] / len(rq_media)
+
+            for im in range(0, 10):
+                im_time_start = time.time()
+                uk[v] = kernel.Inverse_Multiquadric_K(dictionary[:, v], u[:], c)
+                im_time_end = time.time()
+                im_media[im] = im_time_end - im_time_start
+            for z in range(0, len(im_media)):
+                all_media[6] = all_media[6] + im_media[z]
+            all_media[6] = all_media[6] / len(im_media)
+
+            for multi in range(0, 10):
+                multi_time_start = time.time()
+                uk[v] = kernel.Multiquadric_K(dictionary[:, v], u[:], c)
+                multi_time_end = time.time()
+                multi_media[multi] = multi_time_end - multi_time_start
+            for z in range(0, len(multi_media)):
+                all_media[7] = all_media[7] + multi_media[z]
+            all_media[7] = all_media[7] / len(multi_media)
+
+            for cauchy in range(0, 10):
+                cauchy_time_start = time.time()
+                uk[v] = kernel.Cauchy_K(dictionary[:, v], u[:], sigma)
+                cauchy_time_end = time.time()
+                cauchy_media[cauchy] = cauchy_time_end - cauchy_time_start
+            for z in range(0, len(cauchy_media)):
+                all_media[8] = all_media[8] + cauchy_media[z]
+            all_media[8] = all_media[8] / len(cauchy_media)
+
         d = np.dot(w0.T, np.sin(u)) + np.sqrt(sigma_z) * np.random.rand()  # d esta saindo escalar
         e[i] = d - np.dot(w[:, i].T, uk)  # 'e' is shaped as (N, 1)
         w[:, i + 1] = w[:, i] + uk.T * e[i] * mu
 
     # print ("[{}]: {}".format(r,i))
 
-    mse = e[:] ** 2 + mse
-    Ew = w[:, range(0, N)] + Ew  # w is shaped as (p, 1)
-    np.savetxt(
-        '/home/patrick/Desktop/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Polynomianl_Kernel.txt',
-        mse, delimiter=',')
+print("Kernel Polynomial: " + str(all_media[0]) + ";")
+print("Kernel Gauss: " + str(all_media[1]) + ";")
+print("Kernel Exponential " + str(all_media[2]) + ";")
+print("Kernel Laplace: " + str(all_media[3]) + ";")
+print("Kernel Sigmoid: " + str(all_media[4]) + ";")
+print("Kernel Rational Quadratic: " + str(all_media[5]) + ";")
+print("Kernel Inverse-Multiquadric: " + str(all_media[6]) + ";")
+print("Kernel Multiquadric: " + str(all_media[7]) + ";")
+print("Kernel Cauchy: " + str(all_media[8]) + ";")
+"""
+mse = e[:] ** 2 + mse
+Ew = w[:, range(0, N)] + Ew  # w is shaped as (p, 1)
+np.savetxt('put-linuxPath-here/Kernel_Library/Simulacao1/Polynomianl_Kernel.txt',mse, delimiter=',')
 
-gaussian_K = np.genfromtxt(
-    "/home/patrick/Desktop/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Gaussian_Kernel.txt",
-    delimiter=',')
-cauchy_K = np.genfromtxt(
-    "/home/patrick/Desktop/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Cauchy_Kernel.txt",
-    delimiter = ',')
+gaussian_K = np.genfromtxt('put-linuxPath-here/Kernel_Library/Simulacao1/Gaussian_Kernel.txt',delimiter=',')
+cauchy_K = np.genfromtxt( 'put-linuxPath-here/Patrick/Kernel_Library/Simulacao1/Cauchy_Kernel.txt', delimiter=',')"""
 
-gaussian_K = np.reshape(gaussian_K, (len(mse), 1))
-cauchy_K = np.reshape(cauchy_K, (len(mse),1))
+#gaussian_K = np.reshape(gaussian_K, (len(mse), 1))
+#cauchy_K = np.reshape(cauchy_K, (len(mse), 1))
 
-gaussian_K = gaussian_K / R
-cauchy_K = cauchy_K/R
+#gaussian_K = gaussian_K / R
+#cauchy_K = cauchy_K / R
 
 MSE = mse / R
 Ew = Ew / R
 
-end = time.time()
+#end = time.time()
 
-total_time = (end - start) / 60
-print("Tempo de execucao: " + str(total_time) + " minutos")
+#total_time = (end - start) / 60
+#print("Tempo de execucao: " + str(total_time) + " minutos")
 
 for i in range(1, N):
     res[i] = np.linalg.norm(Ew[:, i] - Ew[:, i - 1])
-
+"""
 # Gera os graficos
 MSE = MSE.reshape(N)
 plt.plot(res)
@@ -128,20 +213,23 @@ plt.plot(cauchy_K, color='green')
 plt.plot(gaussian_K, color='red')
 plt.plot(MSE, color='blue')
 plt.legend(('Polinomial', 'Gaussiano', 'Cauchy'))
-plt.xlim(0,2000)
+plt.xlim(0, 2000)
 plt.ylabel('MSE [dB]')
 plt.xlabel('Iterações (n)')
 plt.grid(True)
 plt.savefig(
-    '/home/patrick/Desktop/Kernel_Library/Simulacao n=3k, r=50, mu = 30-4, sz=10-3, sx=10-2/Graphs/MSE/MSE '
+    'C:/Users/patri/Desktop/Patrick/Kernel_Library/Simulacao1/Graphs/MSE/MSE '
     'Gaussiano (Vermelho) vs Cauchy(Verde) vs Polinomial(Azul).eps',
     format='eps', dpi=300)
 plt.figure()
 
 for i in range(len(w0)):
     plt.plot(Ew[i, :])
-plt.ylabel('E\{\bf w}\}')
+plt.ylabel('E/{/bf w}/}')
 plt.xlabel('iterations (n)')
 plt.grid(True)
 plt.savefig('KLMS_Coeficientes_Linear.eps', format='eps', dpi=300)
 plt.show()
+"""
+
+
